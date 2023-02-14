@@ -9,8 +9,12 @@ trigger:
 - main
 
 
-# Variables
 variables:
+  # Container registry service connection established during pipeline creation
+  dockerRegistryServiceConnection: '1d28339c-7a1e-40bc-80b8-612f0bc7a73e'
+  imageRepository: 'yamisotocicda-1402'
+  containerRegistry: 'cgtlxdvops.azurecr.io'
+  dockerfilePath: '$(Build.SourcesDirectory)/Git-Repository-files/Dockerfile'
   tag: '$(Build.BuildId)'
 
 stages:
@@ -28,9 +32,9 @@ stages:
     - task: Docker@2
       inputs:
         containerRegistry: 'manual-aksdevopsacr-svc'
-        repository: 'custom2aksnginxapp1'
+        repository: $(imageRepository)
         command: 'buildAndPush'
-        Dockerfile: '**/Dockerfile'
+        dockerfile: $(dockerfilePath)
         tags: |
           $(tag)
           $(Build.SourceVersion)
